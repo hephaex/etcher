@@ -121,8 +121,7 @@ export const DetailsText = (props: FlexProps) => (
 	/>
 );
 
-export const Modal = styled((props) => {
-	const { style = { height: 420 } } = props;
+export const Modal = styled(({ style, ...props }) => {
 	return (
 		<Provider
 			theme={{
@@ -143,23 +142,30 @@ export const Modal = styled((props) => {
 		>
 			<ModalBase
 				position="top"
-				width={780}
+				width="96vw"
 				cancelButtonProps={{
 					style: {
 						marginRight: '20px',
 						border: 'solid 1px #2a506f',
 					},
 				}}
-				style={style}
+				style={{
+					height: '86.5vh',
+					...style,
+				}}
 				{...props}
 			/>
 		</Provider>
 	);
 })`
 	> div {
-		padding: 30px;
+		padding: 24px 30px;
 		height: calc(100% - 80px);
 		overflow-y: auto;
+
+		::-webkit-scrollbar {
+			display: none;
+		}
 
 		> h3 {
 			margin: 0;
