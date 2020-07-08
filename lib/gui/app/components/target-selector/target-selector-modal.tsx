@@ -50,9 +50,16 @@ import {
 import { store } from '../../models/store';
 import { logEvent, logException } from '../../modules/analytics';
 import { open as openExternal } from '../../os/open-external/services/open-external';
-import { Modal } from '../../styled-components';
+import { Modal as ModalBase } from '../../styled-components';
 
 import TargetSVGIcon from '../../../assets/tgt.svg';
+
+// Prevent title from scrolling up
+const Modal = styled(ModalBase)`
+	> div {
+		overflow-y: hidden;
+	}
+`;
 
 interface UsbbootDrive extends sourceDestination.UsbbootDrive {
 	progress: number;
@@ -376,10 +383,6 @@ export class TargetSelectorModal extends React.Component<
 				cancel={cancel}
 				done={() => done(selectedList)}
 				action={`Select (${selectedList.length})`}
-				style={{
-					width: '780px',
-					height: '420px',
-				}}
 				primaryButtonProps={{
 					primary: !hasStatus,
 					warning: hasStatus,
@@ -387,7 +390,7 @@ export class TargetSelectorModal extends React.Component<
 				}}
 				{...props}
 			>
-				<Flex width="100%" height="100%">
+				<Flex width="100%" height="90%">
 					{!hasAvailableDrives() ? (
 						<Flex
 							flexDirection="column"
@@ -399,11 +402,7 @@ export class TargetSelectorModal extends React.Component<
 							<b>Plug a target drive</b>
 						</Flex>
 					) : (
-						<ScrollableFlex
-							flexDirection="column"
-							width="100%"
-							height="calc(100% - 15px)"
-						>
+						<ScrollableFlex flexDirection="column" width="100%">
 							<TargetsTable
 								refFn={(t: Table<Target>) => {
 									if (t !== null) {
